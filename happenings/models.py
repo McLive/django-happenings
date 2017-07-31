@@ -12,7 +12,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
-
 from .managers import EventManager
 
 auth_user_model = getattr(settings, "AUTH_USER_MODEL", "auth.User")
@@ -20,7 +19,6 @@ auth_user_model = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 @python_2_unicode_compatible
 class Event(models.Model):
-
     USER_COLORS = getattr(settings, "CALENDAR_COLORS", '')
 
     REPEAT_CHOICES = (
@@ -33,12 +31,12 @@ class Event(models.Model):
         ('YEARLY', _('Every Year')),
     )
     COLORS = [
-        ('eeeeee', _('gray')),
-        ('ff0000', _('red')),
-        ('0000ff', _('blue')),
-        ('00ff00', _('green')),
-        ('000000', _('black')),
-        ('ffffff', _('white')),
+        ('eee', _('gray')),
+        ('f00', _('red')),
+        ('00f', _('blue')),
+        ('0f0', _('green')),
+        ('000', _('black')),
+        ('fff', _('white')),
     ]
 
     try:
@@ -69,18 +67,18 @@ class Event(models.Model):
 
     # --------------------------------COLORS-------------------------------- #
     background_color = models.CharField(
-        _("background color"), max_length=10, choices=COLORS, default='eeeeee'
+        _("background color"), max_length=10, choices=COLORS, default='eee'
     )
     background_color_custom = models.CharField(
         _("background color custom"), max_length=6, blank=True,
-        help_text=_('Must be a valid hex triplet. Default is gray (eeeeee)')
+        help_text=_('Must be a valid hex triplet. Default is gray (eee)')
     )
     font_color = models.CharField(
-        _("font color"), max_length=10, choices=COLORS, default='000000'
+        _("font color"), max_length=10, choices=COLORS, default='000'
     )
     font_color_custom = models.CharField(
         _("font color custom"), max_length=6, blank=True,
-        help_text=_('Must be a valid hex triplet. Default is black (000000)')
+        help_text=_('Must be a valid hex triplet. Default is black (000)')
     )
 
     def __init__(self, *args, **kwargs):
@@ -117,7 +115,7 @@ class Event(models.Model):
                 if not now.weekday() > 4:  # must be weekday
                     happening = True
             elif self.repeats('DAILY') or self.repeats('NEVER'):
-                    happening = True
+                happening = True
             elif self.repeats('MONTHLY'):
                 if start.day <= now.day <= end.day:
                     happening = True
@@ -148,11 +146,11 @@ class Event(models.Model):
 
     def starts_same_year_month_as(self, year, month):
         return self.l_start_date.year == year and \
-            self.l_start_date.month == month
+               self.l_start_date.month == month
 
     def starts_same_month_not_year_as(self, month, year):
         return self.l_start_date.year != year and \
-            self.l_start_date.month == month
+               self.l_start_date.month == month
 
     def starts_ends_same_month(self):
         return self.l_start_date.month == self.l_end_date.month
@@ -232,7 +230,8 @@ class Event(models.Model):
     @property
     def last_check_if_cancelled(self):
         if self._last_check_if_cancelled is None:
-            raise AttributeError("``event.last_check_if_cancelled`` can't be used yet: call ``event.check_if_cancelled(date)`` first")
+            raise AttributeError(
+                "``event.last_check_if_cancelled`` can't be used yet: call ``event.check_if_cancelled(date)`` first")
         return self._last_check_if_cancelled
 
     def clean(self):
