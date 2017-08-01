@@ -4,17 +4,14 @@ from __future__ import unicode_literals
 # python lib:
 from calendar import LocaleHTMLCalendar, HTMLCalendar, month_name
 from datetime import date
-import sys
 
+# thirdparties:
+import six
 # django:
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
-from django.utils.dates import WEEKDAYS, WEEKDAYS_ABBR
 from django.utils.html import mark_safe
-
-# thirdparties:
-import six
 
 # happenings:
 from .common import get_now, get_next_and_prev
@@ -26,10 +23,8 @@ CALENDAR_LOCALE = getattr(settings, 'CALENDAR_LOCALE', 'en_US.utf8')
 
 LEGACY_CALENDAR_HOUR_FORMAT = LEGACY_CALENDAR_TIME_FORMAT = getattr(settings, 'CALENDAR_LEGACY_TIME_FORMAT', "%I:%M%p")
 
-
 if '%p' in LEGACY_CALENDAR_TIME_FORMAT:
     LEGACY_CALENDAR_HOUR_FORMAT = LEGACY_CALENDAR_TIME_FORMAT.replace('%M', '')
-
 
 CALENDAR_TIME_FORMAT = getattr(settings, 'CALENDAR_TIME_FORMAT', "TIME_FORMAT")
 
@@ -39,14 +34,15 @@ if not CALENDAR_HOUR_FORMAT:
     CALENDAR_HOUR_FORMAT = CALENDAR_TIME_FORMAT
     if not CALENDAR_HOUR_FORMAT.endswith('_FORMAT'):
         for char in ('i', 's', 'u'):
-            CALENDAR_HOUR_FORMAT = CALENDAR_HOUR_FORMAT.replace(':'+char, '')
-            CALENDAR_HOUR_FORMAT = CALENDAR_HOUR_FORMAT.replace('.'+char, '')
+            CALENDAR_HOUR_FORMAT = CALENDAR_HOUR_FORMAT.replace(':' + char, '')
+            CALENDAR_HOUR_FORMAT = CALENDAR_HOUR_FORMAT.replace('.' + char, '')
             CALENDAR_HOUR_FORMAT = CALENDAR_HOUR_FORMAT.replace(char, '')
         CALENDAR_HOUR_FORMAT = CALENDAR_HOUR_FORMAT.strip(':')
 
 
 class GenericCalendar(HTMLCalendar):
-    def __init__(self, year, month, count, all_month_events, firstweekday=0, request=None, base_context=None, *args, **kwargs):
+    def __init__(self, year, month, count, all_month_events, firstweekday=0, request=None, base_context=None, *args,
+                 **kwargs):
         super(GenericCalendar, self).__init__(firstweekday)
         self.yr = year
         self.mo = month
@@ -56,12 +52,12 @@ class GenericCalendar(HTMLCalendar):
         self.base_context = base_context or {}
         self._context = None
 
-#    def add_occurrence(self):
-#        try:
-#            self.event.occurrence.append(self.day)
-#        except AttributeError:
-#            self.event.occurrence = []
-#            self.event.occurrence.append(self.day)
+    #    def add_occurrence(self):
+    #        try:
+    #            self.event.occurrence.append(self.day)
+    #        except AttributeError:
+    #            self.event.occurrence = []
+    #            self.event.occurrence.append(self.day)
 
     def get_context(self, day=None):
         if self._context is None:
@@ -93,7 +89,8 @@ class GenericCalendar(HTMLCalendar):
             url_name = 'day_list'
         return reverse(url_name, args=(self.yr, self.mo, day))
 
-    def formatmonth(self, theyear, themonth, withyear=True, net=None, qs=None, template='happenings/partials/calendar/month_table.html'):
+    def formatmonth(self, theyear, themonth, withyear=True, net=None, qs=None,
+                    template='happenings/partials/calendar/month_table.html'):
         """Return a formatted month as a table."""
         context = self.get_context()
         context['month_start_date'] = date(self.yr, self.mo, 1)
@@ -113,7 +110,6 @@ class GenericCalendar(HTMLCalendar):
 
 
 class EventCalendar(GenericCalendar):
-
     def popover_helper(self):
         self.when = ''
         self.where = ''
@@ -125,7 +121,7 @@ class EventCalendar(GenericCalendar):
             day_template='happenings/partials/calendar/day_cell.html',
             noday_template='happenings/partials/calendar/day_noday_cell.html',
             popover_template='happenings/partials/calendar/popover.html',
-            ):
+    ):
         """Return a day as a table cell."""
         super(EventCalendar, self).formatday(day, weekday)
         now = get_now()
@@ -188,7 +184,7 @@ class MiniEventCalendar(EventCalendar):
 class LegacyGenericCalendar(LocaleHTMLCalendar):
     def __init__(self, year, month, count, all_month_events, *args):
         if len(args) < 2:
-            args = args + (CALENDAR_LOCALE, )
+            args = args + (CALENDAR_LOCALE,)
         super(GenericCalendar, self).__init__(*args)
         if isinstance(self.locale, tuple):
             if len(self.locale) == 2:
@@ -202,12 +198,12 @@ class LegacyGenericCalendar(LocaleHTMLCalendar):
         self.count = count  # defaultdict in {date:[(title1, pk1), (title2, pk2),]} format
         self.events = all_month_events
 
-#    def add_occurrence(self):
-#        try:
-#            self.event.occurrence.append(self.day)
-#        except AttributeError:
-#            self.event.occurrence = []
-#            self.event.occurrence.append(self.day)
+    #    def add_occurrence(self):
+    #        try:
+    #            self.event.occurrence.append(self.day)
+    #        except AttributeError:
+    #            self.event.occurrence = []
+    #            self.event.occurrence.append(self.day)
 
     def check_if_cancelled(self):
         d = date(self.yr, self.mo, self.day)
@@ -265,7 +261,6 @@ class LegacyGenericCalendar(LocaleHTMLCalendar):
                 'Today</button> %s</th></tr>' % s)
 
 
-
 class LegacyEventCalendar(LegacyGenericCalendar):
     def popover_helper(self):
         """Populate variables used to build popovers."""
@@ -277,7 +272,7 @@ class LegacyEventCalendar(LegacyGenericCalendar):
 
         self.when = ('<p><b>When:</b> ' + display_month + ' ' +
                      str(self.day) + ', ' + self.event.l_start_date.strftime(
-                         LEGACY_CALENDAR_TIME_FORMAT).lstrip('0') + ' - ' +
+            LEGACY_CALENDAR_TIME_FORMAT).lstrip('0') + ' - ' +
                      self.event.l_end_date.strftime(LEGACY_CALENDAR_TIME_FORMAT).lstrip('0') +
                      '</p>')
 
@@ -367,7 +362,7 @@ class LegacyMiniEventCalendar(LegacyGenericCalendar):
                     self.event = event
                     t = LEGACY_CALENDAR_TIME_FORMAT if event.l_start_date.minute else LEGACY_CALENDAR_HOUR_FORMAT
                     self.title = event.l_start_date.strftime(t).lstrip('0') + \
-                        ' - ' + event.title
+                                 ' - ' + event.title
                     self.check_if_cancelled()
                     titles += "<li><a href=\'%s\'>%s</a></li>" % (
                         event.get_absolute_url(), self.title

@@ -5,9 +5,9 @@ import locale
 from django.conf import settings
 
 from happenings.models import Event
-from .handlers import CountHandler
 from .calendars import EventCalendar, MiniEventCalendar
 from .common import get_next_and_prev
+from .handlers import CountHandler
 
 try:
     CALENDAR_LOCALE = str(getattr(settings, "CALENDAR_LOCALE", ""))

@@ -1,15 +1,16 @@
 from __future__ import unicode_literals
 
-from datetime import date, timedelta
 from calendar import monthrange
+from datetime import date, timedelta
 
 from django.utils import timezone
 from django.utils.six.moves import xrange
 
-
 get_now = lambda: timezone.localtime(timezone.now())
 
 now = get_now()
+
+
 # Warning! please do not use 'now' anywhere: it is initialized on first import
 # and so it will not change for days in some environments. It's here just for backward
 # compatibility
@@ -17,7 +18,7 @@ now = get_now()
 
 def inc_month(month, year):
     """
-    Increment the month and, if neccessary, the year.
+    Increment the month and, if necessary, the year.
     Both month and year should be ints.
     """
     month += 1
@@ -34,10 +35,10 @@ def _inc_day(year, month, day, net):
     return new_d.year, new_d.month, new_d.day
 
 
-def get_net_category_tag(req):
-    if req.META['QUERY_STRING']:
-        net = get_net(req)
-        category, tag = get_category_tag(req)
+def get_net_category_tag(request):
+    if request.META['QUERY_STRING']:
+        net = get_net(request)
+        category, tag = get_category_tag(request)
     else:
         net = 0
         category = None
@@ -45,21 +46,19 @@ def get_net_category_tag(req):
     return net, category, tag
 
 
-def get_net(req):
-    """Get the net of any 'next' and 'prev' querystrings."""
+def get_net(request):
+    """Get the nett of any 'next' and 'prev' querystring."""
     try:
-        nxt, prev = map(
-            int, (req.GET.get('cal_next', 0), req.GET.get('cal_prev', 0))
-        )
+        nxt, prev = map(int, (request.GET.get('cal_next', 0), request.GET.get('cal_prev', 0)))
         net = nxt - prev
-    except Exception:
+    except ValueError:
         net = 0
     return net
 
 
-def get_category_tag(req):
+def get_category_tag(request):
     """Get value of any category and/or tag querystrings"""
-    return req.GET.get('cal_category', None), req.GET.get('cal_tag', None)
+    return request.GET.get('cal_category', None), request.GET.get('cal_tag', None)
 
 
 def get_qs(old_qs):

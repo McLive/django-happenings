@@ -6,7 +6,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
@@ -206,9 +205,12 @@ class Event(models.Model):
     def check_if_cancelled(self, date):
         """Return True if event was in cancelled state at 'date'. Also set self.title_extra to ' (CANCELLED)' if it was so.
 
-        Warning! Results are memoized on instance level. If you need to reset "cache" of results then set ``instance._prefetched_objects_cache = {}``
+        Warning! Results are memorized on instance level. If you need to reset "cache" of results
+        then set ``instance._prefetched_objects_cache = {}``
         """
         result = self._check_if_cancelled_cache.get(date, None)
+        cancellations = Cancellation.objects.filter(date=date)
+        print(cancellations)
         if result is None:
             try:
                 # if cancellations are prefetched then use iteration
@@ -224,6 +226,8 @@ class Event(models.Model):
 
         if result:
             self.title_extra = _(" (CANCELLED)")
+        else:
+            self.title_extra = ""
         self._last_check_if_cancelled = result
         return result
 

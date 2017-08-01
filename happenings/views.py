@@ -4,22 +4,20 @@ from __future__ import unicode_literals
 # python lib:
 from datetime import date, timedelta
 
-# django:
-from django.views.generic import ListView, DetailView
+# thirdparties:
+import six
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils.dates import MONTHS_ALT
+# django:
+from django.views.generic import ListView, DetailView
 
-# thirdparties:
-import six
-
+from happenings.utils import common as c
+from happenings.utils.displays import month_display, day_display
+from happenings.utils.mixins import JSONResponseMixin
+from happenings.utils.next_event import get_next_event
 # happenings:
 from .models import Event
-from happenings.utils.displays import month_display, day_display
-from happenings.utils.next_event import get_next_event
-from happenings.utils.mixins import JSONResponseMixin
-from happenings.utils import common as c
-
 
 CALENDAR_LOCALE = getattr(settings, 'CALENDAR_LOCALE', 'en_US.utf8')
 
@@ -37,9 +35,7 @@ class GenericEventView(JSONResponseMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(GenericEventView, self).get_context_data(**kwargs)
 
-        self.net, self.category, self.tag = c.get_net_category_tag(
-            self.request
-        )
+        self.net, self.category, self.tag = c.get_net_category_tag(self.request)
 
         if self.category is not None:
             context['cal_category'] = self.category
@@ -91,7 +87,7 @@ class EventMonthView(GenericEventView):
 
         mini = True if 'cal_mini=true' in qs else False
 
-        # get any querystrings that are not next/prev/year/month
+        # get any querystring that are not next/prev/year/month
         if qs:
             qs = c.get_qs(qs)
 
@@ -124,6 +120,7 @@ class EventMonthView(GenericEventView):
 
         all_month_events.sort(key=lambda x: x.l_start_date.hour)
 
+        # 0 is monday 6 is sunday
         start_day = getattr(settings, "CALENDAR_START_DAY", 0)
         context['calendar'] = month_display(
             year, month, all_month_events, start_day, self.net, qs, mini,
