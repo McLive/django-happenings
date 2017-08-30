@@ -210,7 +210,6 @@ class Event(models.Model):
         """
         result = self._check_if_cancelled_cache.get(date, None)
         cancellations = Cancellation.objects.filter(date=date)
-        print(cancellations)
         if result is None:
             try:
                 # if cancellations are prefetched then use iteration
