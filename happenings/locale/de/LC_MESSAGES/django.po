@@ -1,0 +1,328 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-01 16:02+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: models.py:26
+msgid "times.never"
+msgstr "Nie"
+
+#: models.py:27
+msgid "times.daily"
+msgstr "Täglich"
+
+#: models.py:28
+msgid "times.weekdays"
+msgstr "Jeden Wochentag"
+
+#: models.py:29
+msgid "times.weekly"
+msgstr "Jede Woche"
+
+#: models.py:30
+msgid "times.second_week"
+msgstr "Jede 2. Woche"
+
+#: models.py:31
+msgid "times.monthly"
+msgstr "Jeden Monat"
+
+#: models.py:32
+msgid "times.yearly"
+msgstr "Jedes Jahr"
+
+#: models.py:35
+msgid "colors.gray"
+msgstr "Grau"
+
+#: models.py:36
+msgid "colors.red"
+msgstr "Rot"
+
+#: models.py:37
+msgid "colors.blue"
+msgstr "Blau"
+
+#: models.py:38
+msgid "colors.green"
+msgstr "Grün"
+
+#: models.py:39
+msgid "colors.black"
+msgstr "Schwarz"
+
+#: models.py:40
+msgid "colors.white"
+msgstr "Weiß"
+
+#: models.py:48
+msgid "times.util.start_date"
+msgstr "Datum Beginn"
+
+#: models.py:49
+msgid "times.until.end_date"
+msgstr "Datum Ende"
+
+#: models.py:50
+msgid "times.all_day"
+msgstr "ganztägig"
+
+#: models.py:52
+msgid "times.util.repeat"
+msgstr "Wiederholt sich"
+
+#: models.py:54
+msgid "times.repeat.end"
+msgstr "Wiederholung endet am"
+
+#: models.py:55 models.py:301 models.py:322 models.py:333
+msgid "models.title"
+msgstr "Titel"
+
+#: models.py:56
+msgid "event.description"
+msgstr "Beschreibung"
+
+#: models.py:58
+msgid "event.locations"
+msgstr "Ort"
+
+#: models.py:62
+msgid "event.created_by"
+msgstr "Erstellt von"
+
+#: models.py:65
+msgid "event.category"
+msgstr "Kategorie"
+
+#: models.py:67
+msgid "event.tag"
+msgstr "Tag"
+
+#: models.py:71
+msgid "colors.background"
+msgstr "Hintergrundfarbe"
+
+#: models.py:74
+msgid "colors.background.custom"
+msgstr "persönliche Hintergrundfarbe"
+
+#: models.py:75 models.py:82 models.py:272
+msgid "help.invalid_color"
+msgstr "Muss ein gültiges HTML Farben Triplet sein. "
+
+#: models.py:75
+msgid "help.color.grey"
+msgstr " Standard is Grau (eee)"
+
+#: models.py:78
+msgid "color.font"
+msgstr "Schriftfarbe"
+
+#: models.py:81
+msgid "color.font.custom"
+msgstr "persönliche Schriftfarbe"
+
+#: models.py:82
+msgid "help.color.black"
+msgstr " Standard is Schwarz (000)"
+
+#: models.py:229
+msgid "event.cancelled"
+msgstr " (GESTRICHEN)"
+
+#: models.py:295
+msgid "event"
+msgstr "Termin"
+
+#: models.py:296
+msgid "events"
+msgstr "Termine"
+
+#: models.py:303
+msgid "location.address.line1"
+msgstr "Addresszeile 1"
+
+#: models.py:305
+msgid "location.address.line2"
+msgstr "Addresszeile 2"
+
+#: models.py:307
+msgid "location.address.line3"
+msgstr "Addresszeile 3"
+
+#: models.py:309
+msgid "location.region"
+msgstr "Bundesland / Region / Provinz"
+
+#: models.py:311
+msgid "location.city"
+msgstr "Stadt / Dorf"
+
+#: models.py:313
+msgid "location.zip"
+msgstr "Postleizahl"
+
+#: models.py:314
+msgid "location.country"
+msgstr "Land"
+
+#: models.py:344
+msgid "cancellation.reason"
+msgstr "Grund"
+
+#: models.py:345
+msgid "cancellation.date"
+msgstr "Datum"
+
+#: templates/happenings/event_day_list.html:11
+msgid "navigation.back_to_cal"
+msgstr "Zurück zum Kalender"
+
+#: templates/happenings/event_day_list.html:15
+msgid "view.event"
+msgstr "Termin"
+
+#: templates/happenings/event_day_list.html:17
+#, python-format
+msgid ""
+"\n"
+"            in category <span id=\"cal-day-category\">%(c)s</span>\n"
+"            with tag <span id=\"cal-day-tag\">%(t)s</span>\n"
+"            "
+msgstr ""
+
+#: templates/happenings/event_day_list.html:22
+#, python-format
+msgid ""
+"\n"
+"            with category <span id=\"cal-day-category\">%(c)s</span>\n"
+"            "
+msgstr ""
+
+#: templates/happenings/event_day_list.html:26
+#, python-format
+msgid ""
+"\n"
+"            with tag = <span id=\"cal-day-tag\">%(t)s</span>\n"
+"            "
+msgstr ""
+
+#: templates/happenings/event_day_list.html:32
+msgid "For"
+msgstr "für"
+
+#: templates/happenings/event_day_list.html:38
+msgid "Prev Day"
+msgstr "Vorheriger Tag"
+
+#: templates/happenings/event_day_list.html:41
+msgid "Next Day"
+msgstr "Nächter Tag"
+
+#: templates/happenings/event_day_list.html:48
+msgid "view.no_event"
+msgstr "Keine Termine Heute..."
+
+#: templates/happenings/event_detail.html:9
+#, python-format
+msgid "This is a %(event_duration_days)s day event."
+msgstr "Das ist ein %(event_duration_days)s Termin"
+
+#: templates/happenings/event_detail.html:13
+#, python-format
+msgid "This event repeats %(repeat_lower)s."
+msgstr "Dieser Termin wiederholt sich %(repeat_lower)s."
+
+#: templates/happenings/event_detail.html:15
+msgid "Next event date:"
+msgstr "Nächster Termin"
+
+#: templates/happenings/event_detail.html:18
+#: templates/happenings/event_detail.html:21
+#: templates/happenings/event_detail.html:31
+#: templates/happenings/event_detail.html:39
+msgid "(CANCELLED)"
+msgstr "(GESTRICHEN)"
+
+#: templates/happenings/event_detail.html:20
+#, python-format
+msgid "This was an event that repeated %(repeat_lower)s."
+msgstr "Dieser Termin wurde %(repeat_lower)s wiederholt"
+
+#: templates/happenings/event_detail.html:21
+#, python-format
+msgid "The last event was on %(last_event_date)s"
+msgstr "Der letzte Termin war am %(last_event_date)s"
+
+#: templates/happenings/event_detail.html:23
+#: templates/happenings/partials/calendar/popover.html:3
+msgid "When:"
+msgstr "Wann:"
+
+#: templates/happenings/event_detail.html:28
+#, python-format
+msgid "Day %(num_day)s"
+msgstr "Tag %(num_day)s"
+
+#: templates/happenings/event_detail.html:43
+msgid "today is:"
+msgstr "Heute ist:"
+
+#: templates/happenings/event_detail.html:46
+msgid "This event has been cancelled on the following day(s):"
+msgstr "Dieser Termin wurde an den fogenden Tag(en) gestrichen"
+
+#: templates/happenings/event_detail.html:49
+#, python-format
+msgid "Reason: %(reason)s"
+msgstr "Grund: %(reason)s"
+
+#: templates/happenings/event_detail.html:55
+msgid "Location:"
+msgid_plural "Locations:"
+msgstr[0] "Ort:"
+msgstr[1] "Orte:"
+
+#: templates/happenings/event_detail.html:71
+msgid "Category:"
+msgid_plural "Categories:"
+msgstr[0] "Kategorie:"
+msgstr[1] "Kategorien:"
+
+#: templates/happenings/event_detail.html:80
+msgid "Tag:"
+msgid_plural "Tags:"
+msgstr[0] "Tag"
+msgstr[1] "Tags"
+
+#: templates/happenings/partials/calendar/month_table.html:7
+msgid "Today"
+msgstr "Heute"
+
+#: templates/happenings/partials/calendar/popover.html:10
+msgid "Where:"
+msgstr "Wo?"
+
+#: templates/happenings/partials/calendar/popover.html:19
+msgid "Description:"
+msgstr "Beschreibung"
+
+#: templates/happenings/partials/calendar/popover.html:28
+msgid "View details"
+msgstr "Details"

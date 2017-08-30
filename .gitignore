@@ -24,3 +24,4 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+!/happenings/locale/de/LC_MESSAGES/django.po

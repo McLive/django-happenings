@@ -8,11 +8,11 @@
     {% endif %}
     
     <a href="{% url "calendar:list" %}{{ year }}/{{ month_num }}/">
-        &larr; {% trans "Back to calendar" %}
+		&larr; {% trans "navigation.back_to_cal" %}
     </a>
     
     <h1>
-        {% trans "Events" %}<br>
+		{% trans "view.event" %}<br>
     {% if cal_category and cal_tag %}
             {% blocktrans with c=cal_category t=cal_tag %}
             in category <span id="cal-day-category">{{ c }}</span>
@@ -45,7 +45,7 @@
             {% for event in events %}
                 <li><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></li>
             {% empty %}
-                {% trans "Oops.. No events!" %}
+				{% trans "view.no_event" %}
             {% endfor %}
         </ul>
     

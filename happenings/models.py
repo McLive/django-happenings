@@ -9,7 +9,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 from .managers import EventManager
 
@@ -21,21 +21,21 @@ class Event(models.Model):
     USER_COLORS = getattr(settings, "CALENDAR_COLORS", '')
 
     REPEAT_CHOICES = (
-        ('NEVER', _('Never')),
-        ('DAILY', _('Every Day')),
-        ('WEEKDAY', _('Every Weekday')),
-        ('WEEKLY', _('Every Week')),
-        ('BIWEEKLY', _('Every 2 Weeks')),
-        ('MONTHLY', _('Every Month')),
-        ('YEARLY', _('Every Year')),
+        ('NEVER', _('times.never')),
+        ('DAILY', _('times.daily')),
+        ('WEEKDAY', _('times.weekdays')),
+        ('WEEKLY', _('times.weekly')),
+        ('BIWEEKLY', _('times.second_week')),
+        ('MONTHLY', _('times.monthly')),
+        ('YEARLY', _('times.yearly')),
     )
     COLORS = [
-        ('eee', _('gray')),
-        ('f00', _('red')),
-        ('00f', _('blue')),
-        ('0f0', _('green')),
-        ('000', _('black')),
-        ('fff', _('white')),
+        ('eee', _('colors.gray')),
+        ('f00', _('colors.red')),
+        ('00f', _('colors.blue')),
+        ('0f0', _('colors.green')),
+        ('000', _('colors.black')),
+        ('fff', _('colors.white')),
     ]
 
     try:
@@ -43,41 +43,41 @@ class Event(models.Model):
     except Exception:
         pass
 
-    start_date = models.DateTimeField(verbose_name=_("start date"))
-    end_date = models.DateTimeField(_("end date"))
-    all_day = models.BooleanField(_("all day"), default=False)
+    start_date = models.DateTimeField(verbose_name=_("times.util.start_date"))
+    end_date = models.DateTimeField(_("times.until.end_date"))
+    all_day = models.BooleanField(_("times.all_day"), default=False)
     repeat = models.CharField(
-        _("repeat"), max_length=15, choices=REPEAT_CHOICES, default='NEVER'
+        _("times.util.repeat"), max_length=15, choices=REPEAT_CHOICES, default='NEVER'
     )
-    end_repeat = models.DateField(_("end repeat"), null=True, blank=True)
-    title = models.CharField(_("title"), max_length=255)
-    description = models.TextField(_("description"))
+    end_repeat = models.DateField(_("times.repeat.end"), null=True, blank=True)
+    title = models.CharField(_("models.title"), max_length=255)
+    description = models.TextField(_("event.description"))
     location = models.ManyToManyField(
-        'Location', verbose_name=_('locations'), blank=True
+        'Location', verbose_name=_('event.locations'), blank=True
     )
     objects = EventManager()
     created_by = models.ForeignKey(
-        auth_user_model, verbose_name=_("created by"), related_name='events'
+        auth_user_model, verbose_name=_("event.created_by"), related_name='events'
     )
     categories = models.ManyToManyField(
-        'Category', verbose_name=_('categories'), blank=True
+        'Category', verbose_name=_('event.category'), blank=True
     )
-    tags = models.ManyToManyField('Tag', verbose_name=_('tags'), blank=True)
+    tags = models.ManyToManyField('Tag', verbose_name=_('event.tag'), blank=True)
 
     # --------------------------------COLORS-------------------------------- #
     background_color = models.CharField(
-        _("background color"), max_length=10, choices=COLORS, default='eee'
+        _("colors.background"), max_length=10, choices=COLORS, default='eee'
     )
     background_color_custom = models.CharField(
-        _("background color custom"), max_length=6, blank=True,
-        help_text=_('Must be a valid hex triplet. Default is gray (eee)')
+        _("colors.background.custom"), max_length=6, blank=True,
+        help_text=_('help.invalid_color') + _("help.color.grey")
     )
     font_color = models.CharField(
-        _("font color"), max_length=10, choices=COLORS, default='000'
+        _("color.font"), max_length=10, choices=COLORS, default='000'
     )
     font_color_custom = models.CharField(
-        _("font color custom"), max_length=6, blank=True,
-        help_text=_('Must be a valid hex triplet. Default is black (000)')
+        _("color.font.custom"), max_length=6, blank=True,
+        help_text=_('help.invalid_color') + _("help.color.black")
     )
 
     def __init__(self, *args, **kwargs):
@@ -210,7 +210,6 @@ class Event(models.Model):
         """
         result = self._check_if_cancelled_cache.get(date, None)
         cancellations = Cancellation.objects.filter(date=date)
-        print(cancellations)
         if result is None:
             try:
                 # if cancellations are prefetched then use iteration
@@ -225,7 +224,7 @@ class Event(models.Model):
             self._check_if_cancelled_cache[date] = result
 
         if result:
-            self.title_extra = _(" (CANCELLED)")
+            self.title_extra = _("event.cancelled")
         else:
             self.title_extra = ""
         self._last_check_if_cancelled = result
@@ -268,7 +267,7 @@ class Event(models.Model):
 
     def clean_colors(self):
         """Makes sure that if a custom color is supplied, it's valid."""
-        err = _("Color must be a valid hex triplet.")
+        err = _('help.invalid_color')
         colors = ['background_color_custom', 'font_color_custom']
         colors2 = colors + ['background_color', 'font_color']
         # If there are custom colors specified in settings, length of
@@ -297,20 +296,20 @@ class Event(models.Model):
 
 @python_2_unicode_compatible
 class Location(models.Model):
-    name = models.CharField(_('Name'), max_length=255)
+    name = models.CharField(_('models.title'), max_length=255)
     address_line_1 = models.CharField(
-        _('Address Line 1'), max_length=255, blank=True)
+        _('location.address.line1'), max_length=255, blank=True)
     address_line_2 = models.CharField(
-        _('Address Line 2'), max_length=255, blank=True)
+        _('location.address.line2'), max_length=255, blank=True)
     address_line_3 = models.CharField(
-        _('Address Line 3'), max_length=255, blank=True)
+        _('location.address.line3'), max_length=255, blank=True)
     state = models.CharField(
-        _('State / Province / Region'), max_length=63, blank=True)
+        _('location.region'), max_length=63, blank=True)
     city = models.CharField(
-        _('City / Town'), max_length=63, blank=True)
+        _('location.city'), max_length=63, blank=True)
     zipcode = models.CharField(
-        _('ZIP / Postal Code'), max_length=31, blank=True)
-    country = models.CharField(_('Country'), max_length=127, blank=True)
+        _('location.zip'), max_length=31, blank=True)
+    country = models.CharField(_('location.country'), max_length=127, blank=True)
 
     def __str__(self):
         return self.name
@@ -318,7 +317,7 @@ class Location(models.Model):
 
 @python_2_unicode_compatible
 class Category(models.Model):
-    title = models.CharField(_('title'), max_length=255)
+    title = models.CharField(_('models.title'), max_length=255)
 
     def __str__(self):
         return self.title
@@ -329,7 +328,7 @@ class Category(models.Model):
 
 @python_2_unicode_compatible
 class Tag(models.Model):
-    name = models.CharField(_('name'), max_length=255)
+    name = models.CharField(_('models.title'), max_length=255)
 
     def __str__(self):
         return self.name
@@ -340,8 +339,8 @@ class Cancellation(models.Model):
     event = models.ForeignKey(
         Event, related_name="cancellations", related_query_name="cancellation"
     )
-    reason = models.CharField(_("reason"), max_length=255)
-    date = models.DateField(_("date"))
+    reason = models.CharField(_("cancellation.reason"), max_length=255)
+    date = models.DateField(_("cancellation.date"))
 
     def __str__(self):
         return self.event.title + ' - ' + str(self.date)
