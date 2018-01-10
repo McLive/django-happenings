@@ -6,7 +6,11 @@ from datetime import date, timedelta
 from django.utils import timezone
 from django.utils.six.moves import xrange
 
-get_now = lambda: timezone.localtime(timezone.now())
+get_now = None
+try:
+    get_now = lambda: timezone.localtime(timezone.now())
+except ValueError:
+    get_now = lambda: timezone.localtime(timezone.make_aware(timezone.now()), timezone.utc)
 
 now = get_now()
 
