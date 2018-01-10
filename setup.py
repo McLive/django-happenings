@@ -11,6 +11,7 @@ VERSION = '16.05.00'
 setup(
     name='django-happenings',
     #version=happenings.__version__,
+    version=VERSION,
     packages=find_packages(),
     include_package_data=True,
     license='BSD License',
